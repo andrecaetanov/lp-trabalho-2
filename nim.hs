@@ -10,8 +10,7 @@ import Opponent.Hard
 start :: IO ()
 start = do
     putStrLn "The game started!"
-    putStr "Select the difficulty (enter 0 for easy and 1 for hard): "
-    difficulty <- getDigit
+    difficulty <- selectDifficulty
     if (difficulty == 0) then
         play initialRows 1 difficulty
     else
@@ -20,6 +19,17 @@ start = do
 -- Representation in list of the game rows with the number of sticks
 initialRows :: [Int]
 initialRows = [1, 3, 5, 7]
+
+-- Request difficulty selection (0 for easy and 1 for hard)
+selectDifficulty :: IO Int
+selectDifficulty = do
+    putStr "Select the difficulty (enter 0 for easy and 1 for hard): "
+    difficulty <- getDigit
+    if (difficulty == 0 || difficulty == 1) then
+        return difficulty
+    else do
+        putStrLn "Invalid difficulty. Try again!"
+        selectDifficulty
 
 -- Runs a game round that can be either the player's or the opponent's on both difficulties
 play :: [Int] -> Int -> Int -> IO ()
@@ -45,4 +55,3 @@ play rows player difficulty = do
             else do
                 move <- bestPlay rows
                 play (removeSticks rows (fst move) (snd move)) (nextPlayer player) difficulty
-        

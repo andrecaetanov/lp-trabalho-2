@@ -13,7 +13,7 @@ bestPlay (x:xs) = bestPlayHelper (x:xs) 1 x
 -- Helper function to get a move following the winning strategy
 bestPlayHelper :: [Int] -> Int -> Int -> IO (Int, Int)
 bestPlayHelper rows row sticksRemoved = 
-    if (and [row == (length rows), sticksRemoved == 0]) then do
+    if ((row == (length rows)) && (sticksRemoved == 0)) then do
         (randomMove rows)
     else if (sticksRemoved == 0) then
         bestPlayHelper rows (row + 1) (rows !! row)

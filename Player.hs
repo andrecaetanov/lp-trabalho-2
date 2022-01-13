@@ -11,14 +11,22 @@ playerMove :: [Int] -> IO (Int, Int)
 playerMove rows = do
     putStr "Enter the row number: "
     chosenRow <- getDigit
-    putStr "Enter the number of sticks to be removed: "
-    sticksRemoved <- getDigit
-    if (isValidMove rows chosenRow sticksRemoved) then do
-        return (chosenRow, sticksRemoved)
+    if (isValidRow rows chosenRow) then do
+        putStr "Enter the number of sticks to be removed: "
+        sticksRemoved <- getDigit
+        if (isValidMove rows chosenRow sticksRemoved) then do
+            return (chosenRow, sticksRemoved)
+        else do
+            putStrLn "Invalid move: The line doesn't have that many sticks. Try again!"
+            playerMove rows
     else do
-        putStrLn "Invalid move: The line doesn't have that many sticks. Try again!"
+        putStrLn "Invalid move: Invalid row number. Try again!"
         playerMove rows
 
--- Checks if the move is valid
+-- Checks if the line number is greater than 0 and less or equal to the number of lines
+isValidRow :: [Int] -> Int -> Bool
+isValidRow rows chosenRow = (chosenRow > 0) && (chosenRow <= (length rows))
+
+-- Checks if the row has a number greater than or equal to the number of sticks to be removed
 isValidMove :: [Int] -> Int -> Int -> Bool
 isValidMove rows chosenRow sticksRemoved = (rows !! (chosenRow - 1)) >= sticksRemoved
