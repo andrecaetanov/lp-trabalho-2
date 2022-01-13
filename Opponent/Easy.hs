@@ -17,7 +17,7 @@ randomMove rows = do
 -- Where the first element is the index of the row and the second the number of sticks to be removed
 getRandomRow :: [Int] -> IO (Int, Int)
 getRandomRow rows = do
-    randomIndex <- randomRIO(1, ((length (getNonZeroRows rows)) - 1))
+    randomIndex <- randomRIO(0, ((length (getNonZeroRows rows)) - 1))
     return ((getNonZeroRows rows) !! randomIndex)
 
 -- Gets a list of non-zero rows 
